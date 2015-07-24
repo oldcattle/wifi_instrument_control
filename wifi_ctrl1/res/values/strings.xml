@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">RuiJie-Ate</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    
+    <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
+
+    <string name="selectProtocol">Please select communication protocol:</string>    
+    <string name="tcp">TCP</string>
+    <string name="udp">UDP</string>
+
+    <string name="dummy_title">Dummy title</string>
+    <string name="dummy_subtitle">Dummy subtitle</string>
+
+    <string name="delete_content_description">Delete</string>
+
+    <string name="touched_primary_message">Touched primary list item target.</string>
+    <string name="touched_secondary_message">Touched secondary list item target (delete).</string>
+
+    <string name="docs_link_title">Design docs: borderless buttons</string>
+    
+    <string name="srcip">Src IP:   </string>
+    <string name="dstip">Dst IP: </string>
+    <string name="clear">Clear</string>
+    <string name="send">Send</string>
+    <string name="receive">Receive</string>    
+    <string name="srcport">Src Port:</string>
+    <string name="dstport">Dst Port:</string>
+    <string name="helpinfo">Help Info:</string>
+	<string name="helpinfo1">          1.src/dst ip format  : 192.168.1.100</string>
+	<string name="helpinfo2">          2.src/dsp port format: 2000</string>
+	<string name="helpinfo3">          3.Press Send Button to send Content</string>
+	<string name="helpinfo4">          4.Press Receive Button stop reveiving</string>
+	<string name="helpinfo5">          5.Listen Port Number is 8000 default</string>
+
+</resources>

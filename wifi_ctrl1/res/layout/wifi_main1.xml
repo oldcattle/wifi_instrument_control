@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="3dip" >
+    
+	<TableLayout 
+	   android:layout_width="match_parent" 
+	   android:layout_height="match_parent" 
+	   android:stretchColumns="1"> 
+	 
+	   <TableRow> 
+	       <TextView 
+	           android:text="@string/srcip" 
+	           android:textStyle="bold" 
+	           android:gravity="right" 
+	           android:padding="3dip" /> 
+	 
+	       <EditText android:id="@+id/srcip_edit" 
+	           android:padding="3dip" 
+	           android:scrollHorizontally="true" 
+	           android:digits="0123456789." /> 
+	   </TableRow> 
+	              
+	   <TableRow> 
+	       <TextView 
+	           android:text="@string/srcport" 
+	           android:textStyle="bold" 
+	           android:gravity="right" 
+	           android:padding="3dip" /> 
+	 
+	       <EditText android:id="@+id/srcport_edit" 
+	           android:padding="3dip" 
+	           android:scrollHorizontally="true"
+	           android:digits="0123456789"  /> 
+	   </TableRow> 
+	 
+	   <TableRow> 
+	       <TextView 
+	           android:text="@string/dstip" 
+	           android:textStyle="bold" 
+	           android:gravity="right" 
+	           android:padding="3dip" /> 
+	 
+	       <EditText android:id="@+id/dstip_edit" 
+	           android:padding="3dip" 
+	           android:scrollHorizontally="true"
+	           android:digits="0123456789."  /> 
+	   </TableRow>  
+	             
+	   <TableRow> 
+	        <TextView 
+	           android:text="@string/dstport" 
+	           android:textStyle="bold" 
+	           android:gravity="right" 
+	           android:padding="3dip" /> 
+	 
+	       <EditText android:id="@+id/dstport_edit" 
+	           android:padding="3dip" 
+	           android:scrollHorizontally="true"
+	           android:digits="0123456789" 
+	           android:numeric="integer" /> 
+	   </TableRow> 
+	 
+	   <TableRow 
+	       android:gravity="right"> 
+	 
+	       <Button android:id="@+id/btn_send" 
+	           android:text="@string/send" /> 
+	 
+	       <EditText android:id="@+id/send_content" 
+	           android:padding="3dip" 
+	           android:scrollHorizontally="true"
+	           android:ems = "10" /> 
+	   </TableRow> 
+	   
+	   <TableRow 
+	       android:gravity="right"> 
+	 
+	       <Button android:id="@+id/btn_clear" 
+	           android:text="@string/receive" /> 
+	 
+	       <EditText android:id="@+id/receive_content" 
+	           android:padding="3dip" 
+	           android:scrollHorizontally="false" 
+	           android:layout_width="wrap_content" 
+			   android:layout_height="wrap_content"
+			   android:ems = "10"/> 
+	   </TableRow> 
+
+
+	   <TextView 
+		           android:text="@string/helpinfo" 
+		           android:layout_width="wrap_content" 
+				   android:layout_height="wrap_content" 
+				   android:textSize="15sp"/>
+
+	   <TextView 
+		           android:text="@string/helpinfo1" 
+		           android:layout_width="wrap_content" 
+				   android:layout_height="wrap_content" 
+				   android:textSize="15sp" />
+
+	   <TextView 
+		           android:text="@string/helpinfo2" 
+		           android:layout_width="wrap_content" 
+				   android:layout_height="wrap_content" 
+				   android:textSize="15sp"/>
+
+
+       <TextView 
+		           android:text="@string/helpinfo3" 
+		           android:layout_width="wrap_content" 
+				   android:layout_height="wrap_content" 
+				   android:textSize="15sp"/>
+	   <TextView 
+		           android:text="@string/helpinfo4" 
+		           android:layout_width="wrap_content" 
+				   android:layout_height="wrap_content" 
+				   android:textSize="15sp"/>
+	   <TextView 
+		           android:text="@string/helpinfo5" 
+		           android:layout_width="wrap_content" 
+				   android:layout_height="wrap_content" 
+				   android:textSize="15sp"/>
+   </TableLayout> 
+
+   
+   <TableLayout 
+	   android:layout_width="match_parent" 
+	   android:layout_height="match_parent" 
+	   android:stretchColumns="1"> 
+	   
+		<TableRow 
+		       android:gravity="right"> 
+		   <TextView style="@style/Widget.DescriptionBar"
+		           android:text="@string/helpinfo" 
+		           android:layout_width="wrap_content" 
+				   android:layout_height="wrap_content" 
+				   android:textSize="15sp"
+				   android:background="#7f00ffff"/>
+		   </TableRow> 
+	   <TableRow 
+		       android:gravity="left"> 
+		   <TextView style="@style/Widget.DescriptionBar"
+		           android:text="@string/helpinfo1" 
+		           android:layout_width="wrap_content" 
+				   android:layout_height="wrap_content" 
+				   android:textSize="15sp"
+				   android:background="#7f00ffff" />
+	   </TableRow> 
+
+	   <TableRow 
+		       android:gravity="left">
+		   <TextView style="@style/Widget.DescriptionBar"
+		           android:text="@string/helpinfo2" 
+		           android:layout_width="wrap_content" 
+				   android:layout_height="wrap_content" 
+				   android:textSize="15sp"
+				   android:background="#7f00ffff"/>
+	      </TableRow> 
+   </TableLayout> 
+   
+</LinearLayout>
