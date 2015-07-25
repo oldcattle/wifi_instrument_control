@@ -34,4 +34,43 @@
         android:paddingRight="25px"
         android:text="@string/tcp" />
 
+     <TableLayout 
+	   android:layout_width="match_parent" 
+	   android:layout_height="wrap_content" 
+	   android:stretchColumns="1"
+	   android:gravity="center_vertical"> 
+	 
+	   <TableRow> 
+	       <TextView 
+	           android:text="default port:" 
+	           android:textSize="40px"
+	           android:gravity="right" 
+	           android:padding="3dip" /> 
+	 
+	       <EditText android:id="@+id/port_edit" 
+	           android:padding="3dip" 
+	           android:scrollHorizontally="false" 
+	           android:digits="0123456789"
+	           android:ems = "1" /> 
+	   </TableRow> 	
+
+	   <TextView 
+			android:text="Help:" 
+			android:textSize="30px"
+			android:gravity="left" 
+			android:padding="3dip" /> 
+		<TextView 
+			android:text="1.Input valid TCP/UDP port num firstly;" 
+			android:textSize="30px"
+			android:gravity="left" 
+			android:padding="3dip" /> 
+		<TextView 
+			android:text="2.the port number format is 8000" 
+			android:textSize="30px"
+			android:gravity="left" 
+			android:padding="3dip" /> 
+	    
+     </TableLayout>
+
+
 </LinearLayout>

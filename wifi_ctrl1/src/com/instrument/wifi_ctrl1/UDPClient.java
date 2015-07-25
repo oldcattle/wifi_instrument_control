@@ -42,7 +42,7 @@ public class UDPClient extends Thread{
 		if (strSrcPort == null || strDstport== null || strServerIP == null ||strText == null
 			||strSrcPort.isEmpty()|| strDstport.isEmpty() || strServerIP == "" || strText == "")
 		{
-			Toast.makeText(context, "Please input valid para...", Toast.LENGTH_SHORT).show();
+			Toast.makeText(context, "Please input valid udp para...", Toast.LENGTH_SHORT).show();
 			return;
 		}
 		

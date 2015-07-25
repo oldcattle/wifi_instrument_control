@@ -30,6 +30,7 @@ import android.net.wifi.WifiManager;
 
 import java.net.Inet4Address;
 import java.net.InetSocketAddress;  
+import java.net.ServerSocket;
 import java.net.Socket;  
 import java.net.SocketTimeoutException; 
 import java.net.SocketException;
@@ -49,12 +50,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;  
 import java.io.OutputStream;  
 import java.io.IOException;
+import java.io.PrintWriter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 
-public class UdpProcessActivity extends Activity {
+public class TcpProcessActivity extends Activity {
 	private static WifiManager wifiManager;
 	private static WifiInfo wifiInfo;
 	private static int ipaddress;
@@ -80,6 +86,14 @@ public class UdpProcessActivity extends Activity {
 	private int recflag = 0;
 	private int listenflag = 1;
 	private String defaultPort;
+
+	//存储所有客户端Socket连接对象
+     private static List<Socket> mClientList = new ArrayList<Socket>(); 
+	
+	//线程池
+	private ExecutorService mExecutorService;  
+	//ServerSocket对象
+	private ServerSocket mServerSocket;
 	
 	public Handler myHandler = new Handler() {	
 		@Override  
@@ -102,8 +116,8 @@ public class UdpProcessActivity extends Activity {
         super.onCreate(savedInstanceState); //after this, the activity is created.
 		
         setContentView(R.layout.wifi_udp);
-
-		Intent intent = getIntent();
+        
+        Intent intent = getIntent();
 		defaultPort = intent.getStringExtra("defaultport");
 
 		context = this.getApplicationContext();
@@ -115,10 +129,7 @@ public class UdpProcessActivity extends Activity {
 		btn_send = (Button) findViewById(R.id.btn_send);
 		btn_receive = (Button) findViewById(R.id.btn_clear);		
 		final EditText srcPort=(EditText)findViewById(R.id.srcport_edit);
-		udpReceiveThread udpRcvThread = new udpReceiveThread();
-		
-
-		wifiManager = (WifiManager)UdpProcessActivity.this.getSystemService(Context.WIFI_SERVICE);		
+		wifiManager = (WifiManager)TcpProcessActivity.this.getSystemService(Context.WIFI_SERVICE);		
 		recflag = 1;
 
 		if (!wifiManager.isWifiEnabled())
@@ -129,10 +140,10 @@ public class UdpProcessActivity extends Activity {
 		wifiInfo = getWifiConnectInfo();
 
 		ipaddress = wifiInfo.getIpAddress();		
-				
-		srcip_txt.setText(ipIntToString(ipaddress));		
+		
+		srcip_txt.setText(ipIntToString(ipaddress));	
 
-		udpRcvThread.start();
+		new  tcpServiceThread().start();
 		
 		btn_send.setOnClickListener(new Button.OnClickListener()  
         {  
@@ -146,7 +157,7 @@ public class UdpProcessActivity extends Activity {
 				}
         		srcPortNum = Integer.parseInt(srcPort.getText().toString());
 
-        		SendUdpText();
+        		SendTcpText();
         	}
         });  
 
@@ -184,7 +195,7 @@ public class UdpProcessActivity extends Activity {
 				return "";  
 			}  
 	}
-	public void SendUdpText() 
+	public void SendTcpText() 
     {
         EditText dstIP=(EditText)findViewById(R.id.dstip_edit);
         EditText sendcontent=(EditText)findViewById(R.id.send_content);
@@ -200,9 +211,9 @@ public class UdpProcessActivity extends Activity {
 			return;
 		}
         
-        UDPClient udpET = new UDPClient(srcPort.getText().toString(), dstPort.getText().toString(),
+        TcpClient tcpET = new TcpClient(srcPort.getText().toString(), dstPort.getText().toString(),
 										dstIP.getText().toString(), message, context, myHandler);
-        udpET.start();
+        tcpET.start();
     }
 
 
@@ -223,7 +234,6 @@ public class UdpProcessActivity extends Activity {
 
 	@Override
     protected void onStop() {
-    	serversocket.close();		
 		recflag = 0;		
         super.onStop();//after this, this activity is no longer visible, it is now stopped.
     }
@@ -233,40 +243,109 @@ public class UdpProcessActivity extends Activity {
         super.onDestroy();//after this.this activity is about to destroyed.
     }
 
-	class udpReceiveThread extends Thread{
-		public void run() {			
-			byte data[] = new byte[1024];
-			DatagramPacket packet = new DatagramPacket(data, data.length);
-
-			while(0 != recflag){
-				Message msg = new Message();  
-				msg.what = 0x11;  
-				Bundle bundle = new Bundle();  
-				bundle.clear(); 
-
-				try{
-					serversocket = new DatagramSocket(Integer.parseInt(defaultPort));
-				} catch (Exception e) {
-					e.printStackTrace();
+	
+	class tcpServiceThread extends Thread{
+	public void run(){
+			try
+			{
+				mServerSocket = new ServerSocket(Integer.parseInt(defaultPort));
+				mExecutorService = Executors.newCachedThreadPool();
+				Socket client = null;
+				while (true)
+				{
+					client = mServerSocket.accept(); 
+					mClientList.add(client);
+					mExecutorService.execute(new ThreadServer(client));
 				}
-
-				packet.setData(data);
-
-				try {
-					serversocket.receive(packet);
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-
-				serversocket.close();
-				String result = new String(packet.getData(), packet.getOffset(), packet.getLength());
-				bundle.putString("msg", result); 
-				msg.setData(bundle);
-				myHandler.sendMessage(msg);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
 			}
 		}
 	}
+	
 
+	//每个客户端单独开启一个线程
+     private class ThreadServer implements Runnable
+     {
+         private Socket            mSocket;
+         private BufferedReader    mBufferedReader;
+         private PrintWriter        mPrintWriter;
+         private String            mStrMSG;
+ 
+         public ThreadServer(Socket socket) throws IOException
+         {
+             this.mSocket = socket;			 
+			 mBufferedReader = new BufferedReader(new InputStreamReader(mSocket.getInputStream()));
+             mStrMSG = "user:"+this.mSocket.getInetAddress()+" come total:" + mClientList.size();
+             sendMessage();
+         }
+         public void run()
+         {
+  			 Message msg = new Message();
+  			 msg.what = 0x01;
+  			 Bundle bundle = new Bundle();  
+  			 bundle.clear();
+			 int flag =0;
+
+
+
+			 bundle.putString("msg", "a client connect"); 
+			 msg.setData(bundle);
+			 myHandler.sendMessage(msg);
+			 while(0 == flag){
+	             try
+	             {
+	                 while ((mStrMSG = mBufferedReader.readLine()) != null)
+	                 {
+	                     if (mStrMSG.trim().equals("exit"))
+	                     {
+	                         //当一个客户端退出时
+	                         mClientList.remove(mSocket);
+	                         mBufferedReader.close();
+	                         mPrintWriter.close();
+							 
+							 bundle.putString("msg", mStrMSG); 
+							 msg.setData(bundle);
+							 myHandler.sendMessage(msg);
+	                         mStrMSG = "user:"+this.mSocket.getInetAddress()+" exit total:" + mClientList.size();
+	                         mSocket.close();
+	                         sendMessage();
+							 flag = 1;
+	                         break;
+	                     }
+	                     else
+	                     {
+	                         mStrMSG = mSocket.getInetAddress() + ":" + mStrMSG;
+	                         //sendMessage();
+
+							 bundle.putString("msg", mStrMSG); 
+							 msg.setData(bundle);
+							 myHandler.sendMessage(msg);
+	                     }
+	                 }
+	             }
+	             catch (IOException e)
+	             {
+	                 e.printStackTrace();
+	             }
+		 	}
+         }
+     
+     
+	   //发送消息给所有客户端
+	     private void sendMessage() throws IOException
+	     {
+	         System.out.println(mStrMSG);
+	         for (Socket client : mClientList)
+	         {
+	             mPrintWriter = new PrintWriter(client.getOutputStream(), true);
+	             mPrintWriter.println(mStrMSG);
+	         }
+	     }
+
+	}
 	
 }
 

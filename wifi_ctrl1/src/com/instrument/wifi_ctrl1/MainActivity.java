@@ -59,6 +59,8 @@ public class MainActivity extends Activity {
 	private final String TAG = "MainActivity";
 	private RadioButton m_btnUdp;
 	private RadioButton m_btnTcp;
+	private EditText m_portNum;
+	public Context context;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {		
@@ -68,21 +70,29 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.wifi_main);
 
 		m_btnUdp = (RadioButton) findViewById(R.id.rb_udp);
-		m_btnTcp = (RadioButton) findViewById(R.id.rb_tcp);				
+		m_btnTcp = (RadioButton) findViewById(R.id.rb_tcp);		
+		m_portNum = (EditText) findViewById(R.id.port_edit);
+		context = this.getApplicationContext();
 
 		m_btnUdp.setOnClickListener(new RadioButton.OnClickListener() {
             public void onClick(View v) {
                 m_btnUdp.setChecked(true);
 				m_btnTcp.setChecked(false);
+				
+				if (m_portNum.getText() == null || m_portNum.getText().length() == 0)
+				{
+					Toast.makeText(context, "Please input valid port para......", Toast.LENGTH_SHORT).show();
+					return;
+				}
 
 				Intent intent = new Intent();
-				intent.setClass(MainActivity.this, UdpProcessActivity.class);
+				intent.setClass(MainActivity.this, UdpProcessActivity.class);				
+				intent.putExtra("defaultport", m_portNum.getText().toString());
 	            try {
 	                startActivity(intent);
 	            } catch (android.content.ActivityNotFoundException ex) {
 	                Log.d(TAG, "UdpProcess Activity Not Found : ");
-	            }
-				
+	            }				
             }
         });
 
@@ -91,8 +101,15 @@ public class MainActivity extends Activity {
                 m_btnTcp.setChecked(true);
 				m_btnUdp.setChecked(false);
 
+				if (m_portNum.getText() == null || m_portNum.getText().length() == 0)
+				{
+					Toast.makeText(context, "Please input valid port para......", Toast.LENGTH_SHORT).show();
+					return;
+				}
+
 				Intent intent = new Intent();
-				intent.setClass(MainActivity.this, UdpProcessActivity.class);
+				intent.setClass(MainActivity.this, TcpProcessActivity.class);
+				intent.putExtra("defaultport", m_portNum.getText().toString());
 	            try {
 	                startActivity(intent);
 	            } catch (android.content.ActivityNotFoundException ex) {
