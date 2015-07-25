@@ -72,7 +72,7 @@ public class TcpClient extends Thread{
 		}
 		
 		m_serverIP = strServerIP;
-		m_text = strText;			
+		m_text = strText + "\n";			
 		m_srcPort = Integer.parseInt(strSrcPort);
 		m_dstPort = Integer.parseInt(strDstport);
 	}

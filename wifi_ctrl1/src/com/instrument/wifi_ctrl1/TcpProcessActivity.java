@@ -288,13 +288,8 @@ public class TcpProcessActivity extends Activity {
   			 Bundle bundle = new Bundle();  
   			 bundle.clear();
 			 int flag =0;
-
-
-
-			 bundle.putString("msg", "a client connect"); 
-			 msg.setData(bundle);
-			 myHandler.sendMessage(msg);
-			 while(0 == flag){
+		
+           	 while(0 == flag){
 	             try
 	             {
 	                 while ((mStrMSG = mBufferedReader.readLine()) != null)
@@ -305,6 +300,8 @@ public class TcpProcessActivity extends Activity {
 	                         mClientList.remove(mSocket);
 	                         mBufferedReader.close();
 	                         mPrintWriter.close();
+			         bundle.clear();
+
 							 
 							 bundle.putString("msg", mStrMSG); 
 							 msg.setData(bundle);
@@ -317,8 +314,9 @@ public class TcpProcessActivity extends Activity {
 	                     }
 	                     else
 	                     {
-	                         mStrMSG = mSocket.getInetAddress() + ":" + mStrMSG;
+	                         mStrMSG =  mStrMSG;
 	                         //sendMessage();
+                                 bundle.clear();
 
 							 bundle.putString("msg", mStrMSG); 
 							 msg.setData(bundle);
