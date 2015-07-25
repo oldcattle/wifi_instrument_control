@@ -3,6 +3,7 @@ package com.instrument.wifi_ctrl1;
 import android.os.Bundle;
 import android.os.Message;
 import android.os.Handler;
+import android.content.Intent;
 
 import android.app.Activity;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 import android.view.View;  
 import android.view.View.OnClickListener; 
+import android.widget.RadioButton;
 
 import android.util.Log;
 
@@ -54,6 +56,9 @@ import java.util.Observable;
 
 
 public class MainActivity extends Activity {
+	private final String TAG = "MainActivity";
+	private RadioButton m_btnUdp;
+	private RadioButton m_btnTcp;
 	
 	@Override
     protected void onCreate(Bundle savedInstanceState) {		
@@ -61,6 +66,41 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState); //after this, the activity is created.
 
 		setContentView(R.layout.wifi_main);
+
+		m_btnUdp = (RadioButton) findViewById(R.id.rb_udp);
+		m_btnTcp = (RadioButton) findViewById(R.id.rb_tcp);				
+
+		m_btnUdp.setOnClickListener(new RadioButton.OnClickListener() {
+            public void onClick(View v) {
+                m_btnUdp.setChecked(true);
+				m_btnTcp.setChecked(false);
+
+				Intent intent = new Intent();
+				intent.setClass(MainActivity.this, UdpProcessActivity.class);
+	            try {
+	                startActivity(intent);
+	            } catch (android.content.ActivityNotFoundException ex) {
+	                Log.d(TAG, "UdpProcess Activity Not Found : ");
+	            }
+				
+            }
+        });
+
+		m_btnTcp.setOnClickListener(new RadioButton.OnClickListener() {
+            public void onClick(View v) {
+                m_btnTcp.setChecked(true);
+				m_btnUdp.setChecked(false);
+
+				Intent intent = new Intent();
+				intent.setClass(MainActivity.this, UdpProcessActivity.class);
+	            try {
+	                startActivity(intent);
+	            } catch (android.content.ActivityNotFoundException ex) {
+	                Log.d(TAG, "UdpProcess Activity Not Found : ");
+	            }
+				
+            }
+        });
 	}
 
 	@Override

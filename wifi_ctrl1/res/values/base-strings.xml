@@ -28,11 +28,4 @@
         
         ]]>
     </string>
-
-    <string name="help_info">
-        <![CDATA[
-                This sample demonstrates the use of borderless buttons, bottom button bars
-                (OK and Cancel) and dividers to establish visual structure. 
-        ]]>
-    </string>
 </resources>

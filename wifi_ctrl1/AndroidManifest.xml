@@ -5,8 +5,15 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="20"
+        android:minSdkVersion="10"
         android:targetSdkVersion="20" />
+
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+
 
     <application
         android:allowBackup="true"
@@ -23,9 +30,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".UdpProcessActivity">
+        <activity android:name=".UdpProcessActivity"
+                  android:label="@string/app_udp">
             <intent-filter >  
-                <action android:name="UdpProcessActivity"/>  
+                <action android:name="android.intent.action.UdpProcess"/>  
             </intent-filter> 
         </activity>
         

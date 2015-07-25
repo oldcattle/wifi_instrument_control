@@ -55,7 +55,8 @@ public class UDPClient extends Thread{
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		int TIMEOUT = 3000;
+		int TIMEOUT = 100;
+		DatagramSocket udpSocket = null;
 		
 		if (m_serverIP == null || m_text == null || m_serverIP.isEmpty()|| m_text.isEmpty())
 		{
@@ -65,14 +66,20 @@ public class UDPClient extends Thread{
 		
 		byte[] bytesToSend = m_text.getBytes();
 		try {
-			InetAddress serverAddress = InetAddress.getByName(m_serverIP);
-			DatagramSocket socket = new DatagramSocket(m_srcPort);
-			socket.setSoTimeout(TIMEOUT);
+			InetAddress serverAddress = InetAddress.getByName(m_serverIP);			
+
+			if(udpSocket==null){
+				udpSocket = new DatagramSocket(null);
+				udpSocket.setReuseAddress(true);
+				udpSocket.bind(new InetSocketAddress(m_srcPort));
+			}
+			
+			udpSocket.setSoTimeout(TIMEOUT);
 			
 			DatagramPacket sendPacket = new DatagramPacket(bytesToSend,bytesToSend.length,serverAddress,m_dstPort);
-			socket.send(sendPacket);
+			udpSocket.send(sendPacket);
 				
-			socket.close();
+			udpSocket.close();
 		} catch (SocketException e){
 			e.printStackTrace();
 		}catch(IOException e){
@@ -93,7 +100,11 @@ public class UDPClient extends Thread{
 		bundle.clear();
 
 		try{
-			serversocket = new DatagramSocket(m_srcPort);
+			if(serversocket==null){
+				serversocket = new DatagramSocket(null);
+				serversocket.setReuseAddress(true);
+				serversocket.bind(new InetSocketAddress(m_srcPort));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

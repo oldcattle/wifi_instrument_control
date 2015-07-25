@@ -8,9 +8,10 @@
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
 
-    <string name="selectProtocol">Please select communication protocol:</string>    
+    <string name="selectProtocol">Please select protocol:</string>    
     <string name="tcp">TCP</string>
     <string name="udp">UDP</string>
+    <string name="app_udp">wifi_ctrl_udp</string>
 
     <string name="dummy_title">Dummy title</string>
     <string name="dummy_subtitle">Dummy subtitle</string>
