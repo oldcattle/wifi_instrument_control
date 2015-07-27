@@ -278,7 +278,7 @@ public class TcpProcessActivity extends Activity {
          {
              this.mSocket = socket;			 
 			 mBufferedReader = new BufferedReader(new InputStreamReader(mSocket.getInputStream()));
-             mStrMSG = "user:"+this.mSocket.getInetAddress()+" come total:" + mClientList.size();
+             mStrMSG = this.mSocket.getInetAddress()+":" + mClientList.size();
              sendMessage();
          }
          public void run()
@@ -306,7 +306,7 @@ public class TcpProcessActivity extends Activity {
 							 bundle.putString("msg", mStrMSG); 
 							 msg.setData(bundle);
 							 myHandler.sendMessage(msg);
-	                         mStrMSG = "user:"+this.mSocket.getInetAddress()+" exit total:" + mClientList.size();
+	                         mStrMSG = "user:"+this.mSocket.getInetAddress()+" exit:" + mClientList.size();
 	                         mSocket.close();
 	                         sendMessage();
 							 flag = 1;
